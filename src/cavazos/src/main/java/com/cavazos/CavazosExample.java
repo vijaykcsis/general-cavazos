@@ -1,7 +1,8 @@
 package com.cavazos;
 
-import java.util.Random;
+import java.util.*; 
 import org.json.simple.*;
+
 
 public class CavazosExample {
 
@@ -15,6 +16,8 @@ public class CavazosExample {
     String[] commandArray = getCommandArray(commandJSONArray);
     System.out.println(commandArray);
 
+    Stack<Integer> stack;
+
     // print list of all commands
     System.out.println("----- List of all commands -----");
     print(commandArray);
@@ -22,24 +25,24 @@ public class CavazosExample {
     System.out.println(
       "----- Issuing 5 random commands from General Cavazos -----"
     );
-    randomCommand(commandArray, 5);
+    issueCommand(commandArray);
   }
 
   // randomly issue commands from General Cavazos
-  public static void randomCommand(String[] commandArray, int numCommand) {
+  public static void issueCommand(String[] commandArray) {
+    int numCommand = 1;
     Random rand = new Random();
-    System.out.printf("Number\tCommand\n");
-    System.out.printf("------\t---------------\n");
+    System.out.printf("-----------------------\n");
     for (int i = 0; i < numCommand; i++) {
       int randIndex = rand.nextInt(commandArray.length);
-      System.out.printf("%04d\t%s\n", i, commandArray[randIndex]);
+      System.out.printf("\t%s\n", commandArray[randIndex]);
     }
   }
 
   // print command array
   public static void print(String[] commandArray) {
     System.out.printf("Number\tCommand\n");
-    System.out.printf("------\t---------------\n");
+    System.out.printf("-----------------------\n");
     for (int i = 0; i < commandArray.length; i++) {
       System.out.printf("%04d\t%s\n", i, commandArray[i]);
     }
