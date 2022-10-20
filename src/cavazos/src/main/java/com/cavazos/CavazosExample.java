@@ -9,23 +9,88 @@ public class CavazosExample {
   public static void main(String[] args) {
     String fileName =
       "/Users/redsm/Documents/GitHub/general-cavazos/src/cavazos/src/main/java/com/cavazos/commands.json";
-      //"/Users/jerom/Documents/GitHub/class-java/general-cavazos/undoredo/src/main/java/com/cavazos/commands.json";
 
-    // read coammands
+    // read commands
     JSONArray commandJSONArray = JSONFile.readArray(fileName);
     String[] commandArray = getCommandArray(commandJSONArray);
-    System.out.println(commandArray);
+    //System.out.println(commandArray);
 
     Stack<Integer> stack;
 
     // print list of all commands
-    System.out.println("----- List of all commands -----");
-    print(commandArray);
+    //System.out.println("----- List of all commands -----");
+    //print(commandArray);
 
+    //issueCommand(commandArray);
+    Scanner scan = new Scanner(System.in);
+    Character command = '_';
+
+    // While loop until user quits
+    while (command != 'q') {
+        printMenu();
+        System.out.print("Enter a command: ");
+        command = menuGetCommand(scan);
+        executeCommand(scan, command);
+    }
+
+    scan.close();
+  }
+
+    // This function is used when printing out the list of commands in the main menu
+    private static void printMenuCommand(Character command, String desc) {
+        System.out.printf("%s\t%s\n", command, desc);
+    }
+
+    public static void printMenu() {
+      printMenuLine();
+      System.out.println("General Cavazos Commander App");
+      printMenuLine();
+
+      printMenuCommand('i', "Issue a command");
+      printMenuCommand('l', "List all of the commands");
+      printMenuCommand('u', "Undo the last command that was issued");
+      printMenuCommand('r', "Redo the last command that was issued");
+      printMenuCommand('q', "Quit");
+
+      printMenuLine();
+  }
+
+  private static void printMenuLine() {
     System.out.println(
-      "----- Issuing 5 random commands from General Cavazos -----"
+    "----------------------------------------------------------"
     );
-    issueCommand(commandArray);
+  }
+
+  private static Boolean executeCommand(Scanner scan, Character command) {
+    Boolean success = true;
+    switch (command) {
+        case 'i':
+            break;
+        case 'l':
+            break;
+        case 'u':
+            break;
+        case 'r':
+            break;
+        case 'q':
+            System.out.println("Thank you for using Chavvi Calc");
+            break;
+        default:
+            System.out.println("ERROR: Unknown commmand");
+            success = false;
+    }
+    return success;
+  }
+
+  // get first character from input
+  private static Character menuGetCommand(Scanner scan) {
+    Character command = '_';
+    String rawInput = scan.nextLine();
+    if (rawInput.length() > 0) {
+        rawInput = rawInput.toLowerCase();
+        command = rawInput.charAt(0);
+    }
+    return command;
   }
 
   // randomly issue commands from General Cavazos
