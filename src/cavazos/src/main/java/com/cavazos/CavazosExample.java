@@ -21,21 +21,28 @@ public class CavazosExample {
       "/Users/redsm/Documents/GitHub/general-cavazos/src/cavazos/src/main/java/com/cavazos/commands.json";
     JSONArray commandJSONArray = JSONFile.readArray(fileName);
     String[] commandArray = getCommandArray(commandJSONArray);
-    Stack<Integer> undoStack;
 
     //issueCommand(commandArray);
     Scanner scan = new Scanner(System.in);
     Character command = '_';
 
+    Stack<Integer> undoStack = new Stack<Integer>();
+    Stack<Integer> redoStack = new Stack<Integer>();
+
+    // In the stack we save the commands as integer 
+    // indexes rather than strings.
+    // (It is more efficient.)
+
     // This while loop runs until the user quits
     // This snippet of code is adapted from the
     // ChavviCalc assignment I submitted earlier  
     // in the semester.
+
     while (command != 'q') {
         printMenu();
         System.out.print("Enter a command: ");
         command = menuGetCommand(scan);
-        executeCommand(scan, command, commandArray, undoStack);
+        executeCommand(scan, command, commandArray, undoStack, redoStack);
     }
 
     scan.close();
@@ -64,7 +71,8 @@ public class CavazosExample {
     );
   }
 
-  private static Boolean executeCommand(Scanner scan, Character command, String[] commandArray, Stack<Integer> undoStack) {
+  private static Boolean executeCommand(Scanner scan, Character command, String[] commandArray,
+  Stack<Integer> undoStack, Stack<Integer> redoStack) {
     Boolean success = true;
     switch (command) {
         case 'i':
@@ -75,8 +83,20 @@ public class CavazosExample {
           print(commandArray);
           break;
         case 'u':
+          printMenuLine();
+          if (undoStack.empty()) {
+            System.out.println("ERROR: There are no commands to undo.");
+          }
+          else {
+            redoStack.push(undoStack.pop()); 
+            System.out.println("General Cavazos orders the troops to UNDO: " + commandArray[redoStack.peek()]);  
+          }
           break;
         case 'r':
+            if (redoStack.empty()) {
+              System.out.println("ERROR: There are no commands to redo.");
+            }
+
           break;
         case 'q':
           System.out.println("Thank you for using the General Cavazos Commander App.");
