@@ -3,34 +3,39 @@ package com.cavazos;
 import java.util.*; 
 import org.json.simple.*;
 
-
+// Note: Some of the menu functions in this program are 
+// adapted from my ChavviCalc assignment that I submitted
+// earlier this semester
 public class CavazosExample {
 
+  // The below variables are defined statically
+  // so that other methods can use them
+
   public static void main(String[] args) {
-    String fileName =
-      "/Users/redsm/Documents/GitHub/general-cavazos/src/cavazos/src/main/java/com/cavazos/commands.json";
-
-    // read commands
-    JSONArray commandJSONArray = JSONFile.readArray(fileName);
-    String[] commandArray = getCommandArray(commandJSONArray);
     //System.out.println(commandArray);
-
-    Stack<Integer> stack;
-
     // print list of all commands
     //System.out.println("----- List of all commands -----");
     //print(commandArray);
+
+    String fileName =
+      "/Users/redsm/Documents/GitHub/general-cavazos/src/cavazos/src/main/java/com/cavazos/commands.json";
+    JSONArray commandJSONArray = JSONFile.readArray(fileName);
+    String[] commandArray = getCommandArray(commandJSONArray);
+    Stack<String> undoStack;
 
     //issueCommand(commandArray);
     Scanner scan = new Scanner(System.in);
     Character command = '_';
 
-    // While loop until user quits
+    // This while loop runs until the user quits
+    // This snippet of code is adapted from the
+    // ChavviCalc assignment I submitted earlier  
+    // in the semester.
     while (command != 'q') {
         printMenu();
         System.out.print("Enter a command: ");
         command = menuGetCommand(scan);
-        executeCommand(scan, command);
+        executeCommand(scan, command, commandArray, undoStack);
     }
 
     scan.close();
@@ -45,13 +50,11 @@ public class CavazosExample {
       printMenuLine();
       System.out.println("General Cavazos Commander App");
       printMenuLine();
-
       printMenuCommand('i', "Issue a command");
       printMenuCommand('l', "List all of the commands");
       printMenuCommand('u', "Undo the last command that was issued");
       printMenuCommand('r', "Redo the last command that was issued");
       printMenuCommand('q', "Quit");
-
       printMenuLine();
   }
 
@@ -61,23 +64,26 @@ public class CavazosExample {
     );
   }
 
-  private static Boolean executeCommand(Scanner scan, Character command) {
+  private static Boolean executeCommand(Scanner scan, Character command, String[] commandArray, Stack<String> undoStack) {
     Boolean success = true;
     switch (command) {
         case 'i':
-            break;
+          issueCommand(commandArray, undoStack);
+          break;
         case 'l':
-            break;
+          System.out.println("command = " + command.toString());
+          print(commandArray);
+          break;
         case 'u':
-            break;
+          break;
         case 'r':
-            break;
+          break;
         case 'q':
-            System.out.println("Thank you for using Chavvi Calc");
-            break;
+          System.out.println("Thank you for using the General Cavazos Commander App.");
+          break;
         default:
-            System.out.println("ERROR: Unknown commmand");
-            success = false;
+          System.out.println("ERROR: Unknown commmand");
+          success = false;
     }
     return success;
   }
@@ -95,19 +101,17 @@ public class CavazosExample {
 
   // randomly issue commands from General Cavazos
   public static void issueCommand(String[] commandArray) {
-    int numCommand = 1;
     Random rand = new Random();
-    System.out.printf("-----------------------\n");
-    for (int i = 0; i < numCommand; i++) {
-      int randIndex = rand.nextInt(commandArray.length);
-      System.out.printf("\t%s\n", commandArray[randIndex]);
-    }
+    printMenuLine();
+    int randIndex = rand.nextInt(commandArray.length);
+    System.out.println("General Cavazos orders the troops to: " + commandArray[randIndex] + ", index:" + Integer.toString(randIndex));
   }
 
   // print command array
   public static void print(String[] commandArray) {
     System.out.printf("Number\tCommand\n");
-    System.out.printf("-----------------------\n");
+    System.out.printf("------\t---------------\n");
+
     for (int i = 0; i < commandArray.length; i++) {
       System.out.printf("%04d\t%s\n", i, commandArray[i]);
     }
