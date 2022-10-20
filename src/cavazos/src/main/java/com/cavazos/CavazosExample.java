@@ -21,7 +21,7 @@ public class CavazosExample {
       "/Users/redsm/Documents/GitHub/general-cavazos/src/cavazos/src/main/java/com/cavazos/commands.json";
     JSONArray commandJSONArray = JSONFile.readArray(fileName);
     String[] commandArray = getCommandArray(commandJSONArray);
-    Stack<String> undoStack;
+    Stack<Integer> undoStack;
 
     //issueCommand(commandArray);
     Scanner scan = new Scanner(System.in);
@@ -64,7 +64,7 @@ public class CavazosExample {
     );
   }
 
-  private static Boolean executeCommand(Scanner scan, Character command, String[] commandArray, Stack<String> undoStack) {
+  private static Boolean executeCommand(Scanner scan, Character command, String[] commandArray, Stack<Integer> undoStack) {
     Boolean success = true;
     switch (command) {
         case 'i':
@@ -100,10 +100,11 @@ public class CavazosExample {
   }
 
   // randomly issue commands from General Cavazos
-  public static void issueCommand(String[] commandArray) {
+  public static void issueCommand(String[] commandArray, Stack<Integer> undoStack) {
     Random rand = new Random();
     printMenuLine();
     int randIndex = rand.nextInt(commandArray.length);
+    undoStack.push(randIndex);
     System.out.println("General Cavazos orders the troops to: " + commandArray[randIndex] + ", index:" + Integer.toString(randIndex));
   }
 
