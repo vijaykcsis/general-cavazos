@@ -6,10 +6,10 @@ import org.json.simple.*;
 // Note: Some of the menu functions in this program are 
 // adapted from my ChavviCalc assignment that I submitted
 // earlier this semester
-public class CavazosExample {
 
-  // The below variables are defined statically
-  // so that other methods can use them
+public class CavazosExample {
+  static Stack<Integer> undoStack = new Stack<Integer>();
+  static Stack<Integer> redoStack = new Stack<Integer>();
 
   public static void main(String[] args) {
     //System.out.println(commandArray);
@@ -26,9 +26,6 @@ public class CavazosExample {
     Scanner scan = new Scanner(System.in);
     Character command = '_';
 
-    Stack<Integer> undoStack = new Stack<Integer>();
-    Stack<Integer> redoStack = new Stack<Integer>();
-
     // In the stack we save the commands as integer 
     // indexes rather than strings.
     // (It is more efficient.)
@@ -42,7 +39,7 @@ public class CavazosExample {
         printMenu();
         System.out.print("Enter a command: ");
         command = menuGetCommand(scan);
-        executeCommand(scan, command, commandArray, undoStack, redoStack);
+        executeCommand(scan, command, commandArray);
     }
 
     scan.close();
@@ -71,12 +68,11 @@ public class CavazosExample {
     );
   }
 
-  private static Boolean executeCommand(Scanner scan, Character command, String[] commandArray,
-  Stack<Integer> undoStack, Stack<Integer> redoStack) {
+  private static Boolean executeCommand(Scanner scan, Character command, String[] commandArray) {
     Boolean success = true;
     switch (command) {
         case 'i':
-          issueCommand(commandArray, undoStack);
+          issueCommand(commandArray);
           break;
         case 'l':
           System.out.println("command = " + command.toString());
@@ -89,14 +85,17 @@ public class CavazosExample {
           }
           else {
             redoStack.push(undoStack.pop()); 
-            System.out.println("General Cavazos orders the troops to UNDO: " + commandArray[redoStack.peek()]);  
+            System.out.println("General Cavazos orders the troops to UNDO: " + commandArray[redoStack.peek()]);
           }
           break;
         case 'r':
             if (redoStack.empty()) {
               System.out.println("ERROR: There are no commands to redo.");
             }
-
+            else { 
+              undoStack.push(redoStack.pop()); 
+              System.out.println("General Cavazos orders the troops to REDO: " + commandArray[undoStack.peek()]);   
+            }
           break;
         case 'q':
           System.out.println("Thank you for using the General Cavazos Commander App.");
@@ -120,11 +119,12 @@ public class CavazosExample {
   }
 
   // randomly issue commands from General Cavazos
-  public static void issueCommand(String[] commandArray, Stack<Integer> undoStack) {
+  public static void issueCommand(String[] commandArray) {
     Random rand = new Random();
     printMenuLine();
     int randIndex = rand.nextInt(commandArray.length);
     undoStack.push(randIndex);
+    //redoStack.push(randIndex);
     System.out.println("General Cavazos orders the troops to: " + commandArray[randIndex] + ", index:" + Integer.toString(randIndex));
   }
 
