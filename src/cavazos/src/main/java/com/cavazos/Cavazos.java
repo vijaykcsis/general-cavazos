@@ -7,7 +7,7 @@ import org.json.simple.*;
 // adapted from my ChavviCalc assignment code that I
 // submitted earlier this semester
 
-public class CavazosExample {
+public class Cavazos {
   static Stack<Integer> undoStack = new Stack<Integer>();
   static Stack<Integer> redoStack = new Stack<Integer>();
   // In the stack we save the commands as integer 
@@ -54,10 +54,10 @@ public class CavazosExample {
     System.out.printf("------\t---------------\n");
 
     for (int i = 0; i < commandArray.length; i++) {
-      System.out.printf("%02d\t%s\n", i, commandArray[i]);
+      System.out.printf("%02d\t%s\n", (i+1), commandArray[i]);
       // Note that the list of commands 
       // that is displayed to the user 
-      // is zero-indexed.
+      // is NOT zero-indexed.
     }
   }
 
